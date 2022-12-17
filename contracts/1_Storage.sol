@@ -1560,6 +1560,7 @@ contract NickNames is ERC721Enumerable, Pausable, GameOwner {
         return _unpause();
     }
 
+    //NickName Mint Fuction
     function mintName(bytes memory name) internal virtual {
 
         require (name.length > 2, "ERC721Romashka: Name empty or < 3 characters");
@@ -1573,10 +1574,12 @@ contract NickNames is ERC721Enumerable, Pausable, GameOwner {
         Names.push(newName);
     }
 
+    //get all names
     function getNames() public view returns (bytes8 [] memory) {
         return Names;
     }
 
+    //test function for cheking how works bytes DELETE IT
     function getStringLength(string memory str) public view onlyGame returns (bytes8) {
         return bytes8(bytes(str));
     }
