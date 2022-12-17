@@ -1560,25 +1560,31 @@ contract NickNames is ERC721Enumerable, Pausable, GameOwner {
         return _unpause();
     }
 
-    function mintName(bytes8 name) internal virtual {
+    function mintName(bytes memory name) internal virtual {
+
+        require (name.length > 2, "ERC721Romashka: Name empty or < 3 characters");
+        require (name.length < 9, "ERC721Romashka: No more than 8 characters");
+        bytes8 newName = bytes8(name);
 
         for (uint i = 0; i < Names.length; i++) {
-            require (Names[i] != name, "ERC721Romashka: Name taken");
+            require (Names[i] != newName, "ERC721Romashka: Name taken");
         }
 
-        Names.push(name);
+        Names.push(newName);
     }
 
     function getNames() public view returns (bytes8 [] memory) {
         return Names;
     }
 
+    function getStringLength(string memory str) public view onlyGame returns (bytes8) {
+        return bytes8(bytes(str));
+    }
+
     function mint(address account, string memory name) public onlyGame returns (bool){
         uint256 tokenId = totalSupply() + 1;
-        require (bytes(name).length > 0, "ERC721Romashka: Name empty!!");
-        bytes8 newName = bytes8(bytes(name));
         _safeMint(account, tokenId);
-        mintName(newName);
+        mintName(bytes(name));
 
         return true;
 	}
